@@ -1,0 +1,77 @@
+#include <iostream>
+
+class Listobj
+{
+    // i need to store the address for the one before and after unless its the head of the List 
+	std::string data;
+	Listobj* next;
+	Listobj* prev;
+
+	public: Listobj* getNext()
+	{
+		return next;
+	}
+	
+	public: Listobj* getPrev()
+	{
+		return prev;
+	}	
+	
+		  //we need to have the ability to set the next and previous nodes for the current node
+
+
+
+};
+class ListHolder
+{
+	int size;
+
+	Listobj* head = nullptr;
+
+	void Clear()
+	{
+		// i wanna first check if the head has a value if it does then i wanna check the next head value do the that inside a loop until i find a null next
+		Listobj* next = head;
+		
+		//this loops through until it find its next null pointer 
+		while (next != nullptr)
+		{
+			Listobj* current = next;
+
+			next = getNext();
+			
+			size--;
+			
+			//size has been reduced by one now we need to delete the current node 
+			
+			delete current;
+
+			
+		}
+
+		head = nullptr;
+
+
+	}
+
+	void add()
+	{
+		//this is not insert just throw it to the last one
+
+
+	}
+
+	void Remove()
+	{
+
+
+
+	}
+
+};
+
+int main()
+{
+    std::cout << "Hello World!\n";
+}
+
