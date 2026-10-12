@@ -2,8 +2,8 @@
 
 class Listobj
 {
-    // i need to store the address for the one before and after unless its the head of the List 
-	std::string data;
+	
+	public: std::string data;
 	Listobj* next;
 	Listobj* prev;
 
@@ -11,67 +11,129 @@ class Listobj
 	{
 		return next;
 	}
-	
+
 	public: Listobj* getPrev()
 	{
 		return prev;
-	}	
+	}
 	
-		  //we need to have the ability to set the next and previous nodes for the current node
+	public: void UpdateNext(Listobj *node)
+	{
+		next = node;
+	}
+	public: void UpdatePrev(Listobj *node)
+	{
+		next = node;
+	}
+	
+	  
+		  Listobj(std::string input)
+		  {
+			  data = input;
+			  next = nullptr;
+			  prev = nullptr;
 
+		  }
 
 
 };
 class ListHolder
 {
-	int size;
+	public: int size = 0;
 
 	Listobj* head = nullptr;
+	
 
-	void Clear()
+	
+
+	public: void Clear()
 	{
-		// i wanna first check if the head has a value if it does then i wanna check the next head value do the that inside a loop until i find a null next
-		Listobj* next = head;
 		
-		//this loops through until it find its next null pointer 
-		while (next != nullptr)
+		Listobj* CurrentNode = head;
+
+		
+		while (CurrentNode != nullptr)
 		{
-			Listobj* current = next;
+			Listobj* LastNode = CurrentNode;
 
-			next = getNext();
-			
+			CurrentNode = CurrentNode-> getNext();
+
 			size--;
-			
-			//size has been reduced by one now we need to delete the current node 
-			
-			delete current;
 
 			
+
+			delete LastNode;
+
+
 		}
 
 		head = nullptr;
 
 
 	}
-
-	void add()
+	
+	
+	public:void add(Listobj* newNode)
 	{
-		//this is not insert just throw it to the last one
+		if (size == 0)
+		{
+			head = newNode;
+			size++;
+		}
+		else if(size == 1)
+		{
+			head->UpdateNext(newNode);
+			head->UpdatePrev(newNode);
+
+			newNode->UpdateNext(head);
+			newNode->UpdatePrev(head);
+
+			size++;
+
+		}
+		else
+		{
+			newNode->UpdatePrev(head->getPrev());
+			newNode->UpdateNext(head);
+
+			Listobj* OldLast = head->getPrev();
+
+			OldLast->UpdateNext(newNode);
+
+			head->UpdatePrev(newNode);
 
 
+
+			size++;
+
+
+		}
+	
 	}
 
-	void Remove()
+	public: void Remove()
 	{
+		Listobj* Last = head->getPrev();
+		Listobj* BeforeLast = Last->getPrev();
 
+		head->UpdatePrev(Last->getPrev());
+		BeforeLast->UpdateNext(head);
 
-
+		size--;
+		delete Last;
 	}
 
+	public: std::string Read(int Pos)
+	{
+		int Index = 0;
+		Listobj* currentObj = head;
+		while (Index != Pos)
+		{
+			currentObj = currentObj->getNext();
+			Index++;
+		}
+		return currentObj->data;
+	}
+	
 };
-
-int main()
-{
-    std::cout << "Hello World!\n";
-}
 
