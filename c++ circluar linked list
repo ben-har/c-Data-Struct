@@ -23,7 +23,7 @@ class Listobj
 	}
 	public: void UpdatePrev(Listobj *node)
 	{
-		next = node;
+		prev = node;
 	}
 	
 	  
@@ -52,7 +52,8 @@ class ListHolder
 		Listobj* CurrentNode = head;
 
 		
-		while (CurrentNode != nullptr)
+
+		while (size != 0)
 		{
 			Listobj* LastNode = CurrentNode;
 
@@ -125,14 +126,21 @@ class ListHolder
 
 	public: std::string Read(int Pos)
 	{
-		int Index = 0;
-		Listobj* currentObj = head;
-		while (Index != Pos)
+		if (Pos >= 0)
 		{
-			currentObj = currentObj->getNext();
-			Index++;
+			int Index = 0;
+			Listobj* currentObj = head;
+
+			while (Index != Pos)
+			{
+				currentObj = currentObj->getNext();
+				Index++;
+			}
+			return currentObj->data;
+
+
 		}
-		return currentObj->data;
+		return "pos is below zero";
 	}
 	
 };
