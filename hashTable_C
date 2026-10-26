@@ -1,0 +1,133 @@
+namespace hashset_c__
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, World!");
+        }
+    }
+    class HashTable
+    {
+        
+            static int Deleted = -2;
+            static int Nil = -1;
+            static int capacity = 10;
+
+            int[] table = new int[capacity];
+            
+            int size = 0;
+
+        
+            HashTable()
+            {
+                for(int i = 0; i < capacity; i++)
+                {
+                    table[i] = Nil;
+                }
+
+            }
+            
+
+            int Hash(int key)
+            { 
+                return key % capacity;
+            }
+            
+            bool Insert(int key)
+            {
+                //if key isnt larger then -1 then return false
+                if(key < 0)
+                {
+                    return false;
+                }
+                //finds the index of the key
+                int index = Hash(key);
+                //says we do not know about the location or if there deleted
+                int FirstDeleted = -1;
+                //loop through the entire array
+                //if we find an index that is NIL we need to check for deleted indexes first
+
+                for(int i = 0; i < capacity; i++)
+                {
+                    //we find the current index and every loop we add one to move to the next index
+                    int current = (index + i) % capacity;
+                    //if we have duplicate return false
+                    if (table[current] == key) { return false;}
+                    //if we find an index with a deleted tag and our var is -1 we store the position of deleted
+                    if (table[current] == Deleted && FirstDeleted == -1)
+                    { 
+                        FirstDeleted = current;
+                
+                    }
+                    //if our index has never had a value in it 
+                    if (table[current] == Nil)
+                    {
+                        //if FirstDeleted is != -1 then assign key to it otherwise put keys in the current
+                        int target = FirstDeleted != -1 ? FirstDeleted : current;
+                        table[target] = key;
+                        size++;
+
+                        return true;
+                
+                    }
+
+
+                }
+                //if we end the loop and havent found a Nil index check to find FirstDeleted
+                if(FirstDeleted  != -1)
+                {
+                    table[FirstDeleted] = key;
+                    size++;
+                    return true;
+                }
+
+
+
+
+
+                return false;
+            }
+            bool Search(int key)
+            {
+                if(key < 0)
+                { return false; }
+
+                int index = Hash(key);
+                for(int i = 0; i < capacity; i++)
+                { 
+                    int current = (index + i) % capacity;
+
+                    if (table[current] == Nil)
+                    {
+                        return false;    
+                    }
+                    if (table[current] == key) { return true; }
+                }
+
+
+                return false;
+            }
+            bool Delete(int key)
+            {
+                if(key < 0 ) { return false; }
+
+                int index = Hash(key);
+
+                for(int i = 0; i < capacity; i++)
+                {
+                    int current = (index + i) % capacity;
+                    if(table[current] == Nil)
+                    { return false; }
+                    if (table[current] == key) {
+
+                        table[current] = Deleted;
+                        size++;
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+    }
+}
