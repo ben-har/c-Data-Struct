@@ -122,7 +122,7 @@ namespace hashset_c__
                     if (table[current] == key) {
 
                         table[current] = Deleted;
-                        size++;
+                        size--;
 
                         return true;
                     }
